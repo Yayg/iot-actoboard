@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask
 from flask import Markup
 from flask import Flask
@@ -9,7 +10,8 @@ app = Flask(__name__)
 # Read port selected by the cloud for our application
 port = int(os.getenv('PORT', 8000))
 
-form = { "lol": 1 }
+data = { "lumiere": 0, "humidity": 0, "temperature": 0, "distance": 0 }
+time = time.time()
 
 @app.route("/")
 def chart():
@@ -20,11 +22,14 @@ def chart():
 
 @app.route("/actoboard", methods=["GET", "POST"])
 def actoboard():
-    global form
+    global data
     if request.method == "POST":
-        form = request.form
+        data["lumiere"] = request.data.get("slot_lumiere")
+        data["humidity"] = request.data.get("slot_humidity")
+        data["temperature"] = request.data.get("slot_temperature")
+        data["distance"] = request.data.get("slot_distance")
     elif request.method == "GET":
-        return str(form)
+        return str(data)
 
 
 if __name__ == "__main__":
