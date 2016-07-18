@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Read port selected by the cloud for our application
 port = int(os.getenv('PORT', 8000))
 
-form = "lol"
+form = { "lol": 1 }
 
 @app.route("/")
 def chart():
@@ -24,7 +24,7 @@ def actoboard():
     if request.method == "POST":
         form = request.form
     elif request.method == "GET":
-        return form
+        return str(form)
 
 
 if __name__ == "__main__":
