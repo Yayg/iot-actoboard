@@ -1,21 +1,14 @@
-import os
-try:
-  from SimpleHTTPServer import SimpleHTTPRequestHandler as Handler
-  from SocketServer import TCPServer as Server
-except ImportError:
-  from http.server import SimpleHTTPRequestHandler as Handler
-  from http.server import HTTPServer as Server
-
-# Read port selected by the cloud for our application
-PORT = int(os.getenv('PORT', 8000))
-# Change current directory to avoid exposure of control files
-os.chdir('static')
-
-httpd = Server(("", PORT), Handler)
-try:
-  print("Start serving at port %i" % PORT)
-  httpd.serve_forever()
-except KeyboardInterrupt:
-  pass
-httpd.server_close()
-
+from flask import Flask
+from flask import Markup
+from flask import Flask
+from flask import render_template
+app = Flask(__name__)
+ 
+@app.route("/")
+def chart():
+    labels = ["January","February","March","April","May","June","July","August"]
+    values = [10,9,8,7,6,4,7,8]
+    return render_template('chart.html', values=values, labels=labels)
+ 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8000)
